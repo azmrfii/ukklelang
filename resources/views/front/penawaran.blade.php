@@ -5,9 +5,23 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
+				{{-- <div id="carouselExampleIndicators  " class="carousel slide card"  data-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item {{ $item->urutan == 0 }} ? 'active' : '' ?>">
+							<img class="d-block" src="{{ asset('storage/' . $item->gambar) }}" width="100%" height="100%">
+						</div>
+					</div>
+					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div> --}}
 				<a href="#" class="product-image"><img src="{{ asset('storage/' . $item->gambar) }}" width="400px"></a>
 			</div>
-
 			<div class="col-md-6 pl-5">
 				<div class="product-detail">
 					<h1>{{ $item->nama_barang }}</h1>

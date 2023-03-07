@@ -27,4 +27,8 @@ class Lelang extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+    public function penawaran()
+    {
+        return $this->hasMany(Penawaran::class);
+    }
 }

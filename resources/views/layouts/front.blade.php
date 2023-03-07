@@ -15,7 +15,7 @@
 	    <link rel="stylesheet" type="text/css" href="assets/icomoon/icomoon.css">
 	    <link rel="stylesheet" type="text/css" href="assets/css/vendor.css">
 	    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 		<!-- script
 		================================================== -->
 		<script src="assets/js/modernizr.js"></script>
@@ -61,7 +61,9 @@
 								<a href="{{ route('register') }}" class="user-account for-buy"><i class="icon icon-user"></i><span>{{ __('Register') }}</span></a>
                             @endif
 						@else
-							<a href="#">Login Sebagai : {{ auth()->user()->username }}</a>
+						{{-- <button type="submit" name="add-to-cart" value=""  data-bs-toggle="modal" data-bs-target="#exampleModal" class="button">Login Sebagai : {{ auth()->user()->username }}</button> --}}
+							Login Sebagai : <a data-bs-toggle="modal" data-bs-target="#exampleModal">{{ auth()->user()->username }}</a>
+						 	<a data-bs-toggle="modal" data-bs-target="#exampleModal2">| Change Password |</a>
 							<a class="user-account for-buy" href="{{ route('logout') }}"
 								onclick="event.preventDefault();
 											document.getElementById('logout-form').submit();">
@@ -86,15 +88,19 @@
 						<!-- <a href="#" class="cart for-buy"><i class="icon icon-clipboard"></i><span>Cart:(0 $)</span></a> -->
 
 						<div class="action-menu">
-
+							{{-- @guest --}}
+							@auth	
 							<div class="search-bar">
 								<a href="#" class="search-button search-toggle" data-selector="#header-wrap">
 									<i class="icon icon-search"></i>
 								</a>
-								<form role="search" method="get" class="search-box">
-									<input class="search-field text search-input" placeholder="Search" type="search">
+								<form action="{{ route('search.barang') }}" role="search" method="get" class="search-box">
+									<input class="search-field text search-input" placeholder="Search" name="search" value="{{ old('search') }}" type="search">
+									{{-- <input type="submit" value="Search"> --}}
 								</form>
 							</div>
+							@endauth	
+							{{-- @endguest --}}
 						</div>
 
 					</div><!--top-right-->
@@ -110,9 +116,10 @@
 
 				<div class="col-md-2">
 					<div class="main-logo">
-						{{-- <a href="{{ route('welcome') }}">{{ __('Lelang Zamfa') }}</a> --}}
+						<h1>Lelang Zamfa</h1>
+						{{-- <a href="#" class="d-none">{{ __('Lelang Zamfa') }}</a> --}}
 						{{-- <a href="#home" data-effect="Home">Home</a> --}}
-						<a href="index.html"><img src="assets/images/main-logo.png" alt="logo"></a>
+						{{-- <a href="index.html"><img src="assets/images/main-logo.png" alt="logo"></a> --}}
 					</div>
 
 				</div>
@@ -149,7 +156,112 @@
 </div><!--header-wrap-->
 
 @yield('content')
-
+@guest
+@auth
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data : {{ Auth::user()->username }}</h1>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<form action="{{ route('edit.akun', Auth::user()->id) }}" method="POST">
+		@csrf
+		@method('PUT')
+		<div class="modal-body">
+			<label for="">NIK</label>
+			<input type="number" name="nik" id="nik" class="form-control @error('nik') is-invalid @enderror" value="{{ Auth::user()->nik }}" placeholder="Masukkan NIK">
+			@error('nik')
+				<span class="invalid-feedback" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+			@enderror
+			<label for="">Nama</label>
+			<input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ Auth::user()->name }}" placeholder="Masukkan Nama">
+			@error('name')
+				<span class="invalid-feedback" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+			@enderror
+			<label for="">Email</label>
+			<input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{ Auth::user()->email }}" placeholder="Masukkan Email">
+			@error('email')
+				<span class="invalid-feedback" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+			@enderror
+			<label for="">Username</label>
+			<input type="text" name="username" id="username" class="form-control @error('username') is-invalid @enderror" value="{{ Auth::user()->username }}" placeholder="Masukkan Username">
+			@error('username')
+				<span class="invalid-feedback" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+			@enderror
+			<label for="">Jenis Kelamin</label>
+			<select name="jk" id="jk" class="form-control @error('jk') is-invalid @enderror" required autocomplete="jk">
+				<option value="Perempuan">{{ __('Perempuan') }}</option>
+				{{-- <option value="Perempuan">{{ Auth::user()->jk }}</option>
+				<option value="Laki-laki">{{ Auth::user()->jk }}</option> --}}
+				<option value="Laki-laki">{{ __('Laki-laki') }}</option>
+			</select>
+			@error('jk')
+				<span class="invalid-feedback" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+			@enderror
+			<label for="">No Handphone</label>
+			<input type="number" name="no_hp" id="no_hp" class="form-control @error('no_hp') is-invalid @enderror" value="{{ Auth::user()->no_hp }}" placeholder="Masukkan Nama">
+			@error('no_hp')
+				<span class="invalid-feedback" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+			@enderror
+			<label for="">Alamat</label>
+			<textarea name="alamat" id="alamat" class="form-control @error('alamat') is-invalid @enderror" cols="30" rows="10">{{ Auth::user()->alamat }}</textarea>
+			{{-- <input type="number" name="no_hp" id="no_hp" class="form-control @error('no_hp') is-invalid @enderror" value="{{ old('no_hp') }}" placeholder="Masukkan Nama"> --}}
+			@error('alamat')
+				<span class="invalid-feedback" role="alert">
+					<strong>{{ $message }}</strong>
+				</span>
+			@enderror
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		  <button type="submit" class="btn btn-primary">Edit</button>
+		</div>
+		</form>
+	  </div>
+	</div>
+  </div>
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<h1 class="modal-title fs-5" id="exampleModalLabel">Edit Data : {{ Auth::user()->username }}</h1>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	  </div>
+	  <form action="{{ route('edit.password', Auth::user()->id) }}" method="POST">
+	  @csrf
+	  @method('PUT')
+	  <div class="modal-body">
+		  <label for="">Current Password</label>
+		  <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" value="" placeholder="Masukkan Password">
+		  @error('password')
+			  <span class="invalid-feedback" role="alert">
+				  <strong>{{ $message }}</strong>
+			  </span>
+		  @enderror
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		<button type="submit" class="btn btn-primary">Change</button>
+	  </div>
+	  </form>
+	</div>
+  </div>
+</div> 
+@endauth
+@endguest
 <footer id="footer">
 	<div class="container">
 		<div class="row">
@@ -304,6 +416,7 @@
 <script src="assets/js/jquery-1.11.0.min.js"></script>
 <script src="assets/js/plugins.js"></script>
 <script src="assets/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <!-- DataTables  & Plugins -->
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>

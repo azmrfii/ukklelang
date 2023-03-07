@@ -4,7 +4,7 @@
   <div class="col-md-12">
     <div class="card card-info">
       <div class="card-header">
-        <h3 class="card-title">Input Data Barang</h3>
+        <h3 class="card-title">Input Data Barang Lelang</h3>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
@@ -17,7 +17,11 @@
                 <label>Barang</label>
                 <select class="form-control" id="position-option" name="id_barang">
                     @foreach ($barangs as $b)
-                        <option value="{{ $b->id }}">{{ $b->nama_barang }}</option>
+                    @if ($b->status == 'new')
+                    <option value="{{ $b->id }}">{{ $b->nama_barang }}</option>
+                    {{-- @else
+                    <option value="Tidak ada barang">{{ __('Tidak ada barang') }}</option> --}}
+                    @endif
                     @endforeach
                 </select>
               </div>

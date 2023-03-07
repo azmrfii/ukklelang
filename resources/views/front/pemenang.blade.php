@@ -6,7 +6,7 @@
 		<div class="col-md-12">
 			<div class="card">
 				<div class="card-header">
-				  <h3 class="card-title">Riwayat Penawaran : {{ Auth::user()->username }}</h3>
+				  <h3 class="card-title">Riwayat Pemenang Lelang</h3>
 				</div>
 				<!-- /.card-header -->
 				<div class="card-body">
@@ -21,9 +21,9 @@
 					  <th>Status</th>
 					</tr>
 					</thead>
-					<tbody>
+					{{-- <tbody>
 					  @foreach ($penawarans as $p)
-                      @if ($p->lelang->status == 'confirmed')
+                      @if ($p->lelang->confirm_date != null)
                       <tr>
                         <td>{{ $p->masyarakat->nik }}</td>
                         <td>{{ $p->masyarakat->username }}</td>
@@ -31,6 +31,20 @@
                         <td>{{ $p->lelang->barang->harga_awal }}</td>
                         <td>{{ $p->harga_penawaran }}</td>
                         <td>{{ $p->lelang->status }}</td>
+                    </tr>
+                      @endif
+					  @endforeach
+					</tbody> --}}
+					<tbody>
+					  @foreach ($lelangs as $l)
+                      @if ($l->confirm_date != null)
+                      <tr>
+						<td>{{ @$l->masyarakat->nik }}</td>
+						<td>{{ @$l->masyarakat->username }}</td>
+                        <td>{{ $l->barang->nama_barang}}</td>
+						<td>Rp. {{ number_format($l->harga_awal) }}</td>
+						<td>{{ $l->harga_akhir }}</td>
+						<td>{{ $l->status }}</td>
                     </tr>
                       @endif
 					  @endforeach

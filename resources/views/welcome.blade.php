@@ -56,9 +56,8 @@
 				<div class="product-list" data-aos="fade-up">
 					<div class="grid product-grid">
 						{{-- @if ($lelangs->status == 'open') --}}
-
-						@foreach ($lelangs as $l => $item)
 						
+						@foreach ($lelangs as $l => $item)
 						{{-- @if ($item->status == 'proses') --}}
                         <figure class="product-style">
 							<img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar" class="product-item">

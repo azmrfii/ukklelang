@@ -34,10 +34,10 @@
               <td>{{ $l->tgl_akhir }}</td>
               <td>{{ $l->barang->nama_barang}}</td>
               <td>Rp. {{ number_format($l->harga_awal) }}</td>
-              <td>{{ $l->harga_akhir }}</td>
+              <td>Rp. {{ number_format($l->harga_akhir) }}</td>
+              {{-- <td>{{ $l->harga_akhir }}</td> --}}
               <td>{{ $l->user->username }}</td>
-              <td></td>
-              {{-- <td>{{ $l->masyarakat->username }}</td> --}}
+              <td>{{ @$l->masyarakat->username }}</td>
               <td>{{ $l->status }}</td>
               <td>
                 @if ($l->status == 'open')

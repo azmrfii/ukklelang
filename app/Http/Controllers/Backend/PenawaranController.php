@@ -101,9 +101,12 @@ class PenawaranController extends Controller
     
     public function pemenang()
     {
-        $penawarans = Penawaran::all();
-        return view('backend.penawaran.pemenang', compact('penawarans'));
+        $lelangs = Lelang::all();
+        // $penawarans = Penawaran::all();
+        // return view('backend.penawaran.pemenang', compact('penawarans'));
+        return view('backend.penawaran.pemenang', compact('lelangs'));
     }
+
     public function tawar()
     {
         $lelangs = DB::table('lelangs')->join('barangs', 'lelangs.id_barang', '=', 'barangs.id')
@@ -177,10 +180,24 @@ class PenawaranController extends Controller
         // dd($lelangs);
 
 
-        $data = Lelang::find($id);
-        Lelang::where('id','=', $id)->update([
-            'status' => 'confirmed' #Non-aktif Sukses
+        // $data = Lelang::find($id);
+        // Lelang::where('id','=', $id)->update([
+        //     'status' => 'confirmed' #Non-aktif Sukses
+        // ]);
+        // return redirect()->route('pemenanglelang')->with('alert', 'Successfully confirm lelang !');
+
+        $penawarans = Penawaran::find($id);
+        $lelangs = Lelang::find($id);
+        $date = Carbon::now();
+
+        $dt = Lelang::where('id', '=', $penawarans->id)->update([
+            'id_masyarakat' => $penawarans->id_masyarakat,
+            'harga_akhir' => $penawarans->harga_penawaran,
+            'confirm_date' => $date->toDateTimeString(), 
+            'status' => 'confirmed',
         ]);
-        return redirect()->route('pemenanglelang')->with('alert', 'Successfully confirm lelang !');
+         return redirect()->route('pemenanglelang')->with('alert', 'Successfully confirm lelang !');
+
+        // dd($dt);
     }
 }

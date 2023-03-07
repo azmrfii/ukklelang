@@ -22,24 +22,18 @@
             <th>Harga Awal</th>
             <th>Gambar</th>
             <th>Status</th>
-            <th>Action</th>
           </tr>
           </thead>
           <tbody>
+            @foreach ($barangs as $b)
             <tr>
-            <td>{{ $gambar->barang->nama_barang }}</td>
-            <td>{{ $gambar->barang->deskripsi }}</td>
-            <td>IDR {{ number_format($gambar->barang->harga_awal) }}</td>
-            <td><img src="{{ asset('storage/' . $gambar->gambar) }}" alt="" width="100px"></td>
-            <td>{{ $gambar->barang->status }}</td>
-            <td>
-              @if ($gambar->barang->status == 'new')
-             <a href="">This barang is ready</a>
-              @else
-              <a href="">This barang is delivery</a>                  
-              @endif
-              </td>
+              <td>{{ $b->nama_barang }}</td>
+              <td>{{ $b->deskripsi }}</td>
+              <td>IDR {{ number_format($b->harga_awal) }}</td>
+              <td><img src="{{ asset('storage/' . $b->gambar) }}" alt="" width="100px"></td>
+              <td>{{ $b->status }}</td>
             </tr>
+            @endforeach
           </tbody>
           <tfoot>
           <tr>
@@ -48,7 +42,6 @@
             <th>Harga Awal</th>
             <th>Gambar</th>
             <th>Status</th>
-            <th>Action</th>
           </tr>
           </tfoot>
         </table>

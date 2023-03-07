@@ -73,15 +73,12 @@ class BarangController extends Controller
      */
     public function show(Request $request, $id)
     {
-        // $barangs = DB::table('gambars')->leftJoin('barangs', 'barangs.id', '=', 'gambars.id_barang')
-        // ->get()
-        // ->find($id);
-        // return redirect()->route('homemasyarakat');
-        // return view('backend.barang.show', compact('barangs'));
-
-        $gambar = Gambar::find($id);
-        $barang = Barang::find($id);
-        return view('backend.barang.show',compact('gambar', 'barang'));
+        $barangs = DB::table('barangs')->leftJoin('gambars', 'barangs.id', '=', 'gambars.id_barang')
+        ->where('barangs.id', '=', $id)
+        ->get();
+        // return view('backend.barang.show',compact('gambar', 'barang'));
+        return view('backend.barang.show',compact('barangs'));
+        // return view('backend.barang.show',compact('gambars'));
     }
 
     /**

@@ -6,9 +6,12 @@ use App\Models\Barang;
 use App\Models\Gambar;
 use App\Models\Lelang;
 use App\Models\Penawaran;
+use App\Models\Masyarakat;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -41,6 +44,47 @@ class HomeController extends Controller
     //                                 ->get();
     //     return view('welcome', compact('lelangs'));
     // }
+    public function edit(Request $request, $id)
+    {
+        $data = Masyarakat::find($id);
+
+        $nik = $request->input('nik');
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $username = $request->input('username');
+        $jk = $request->input('jk');
+        $no_hp = $request->input('no_hp');
+        $alamat = $request->input('alamat');
+        
+        Masyarakat::where('id', Auth::user()->id)->update([
+            'nik' => $nik,
+            'name' => $name,
+            'email' => $email,
+            'username' => $username,
+            'jk' => $jk,
+            'no_hp' => $no_hp,
+            'alamat' => $alamat,
+        ]);
+        return redirect()->route('home')->with('alert', 'Successfully managed to change the item user !');
+    }
+
+    public function editpass(Request $request, $id)
+    {
+        $masyarakat = Masyarakat::find($id);
+ 
+        $data = $request->validate([
+            'password' => 'required',
+        ]);
+
+        $data['password'] = Hash::make($data['password']);
+
+        // dd($data);
+        $masyarakat->update($data);
+
+        return redirect()->route('home')->with('alert', 'Successfully managed to change the password user !');
+    }
+
+
 
     public function dashboard()
     {
@@ -52,12 +96,28 @@ class HomeController extends Controller
     {
         $lelangs = DB::table('lelangs')->join('barangs', 'lelangs.id_barang', '=', 'barangs.id')
                                     ->leftJoin('gambars', 'gambars.id_barang', '=', 'barangs.id')
+                                    ->where('lelangs.tgl_mulai', '<', Carbon::now())
+                                    ->where('lelangs.tgl_akhir', '>', Carbon::now())
                                     ->where('lelangs.status', '=', 'open')
+                                    ->where('gambars.urutan', '=', '0')
                                     ->get();
-     
+
         return view('welcome', compact('lelangs'));
     }
     
+    public function search(Request $request)
+    {
+        $search = $request->search;
+
+        $lelangs = DB::table('lelangs')->join('barangs', 'lelangs.id_barang', '=', 'barangs.id')
+                                    ->leftJoin('gambars', 'gambars.id_barang', '=', 'barangs.id')
+                                    ->where('barangs.nama_barang', 'like','%' . $search .  '%')
+                                    ->where('gambars.urutan', '=', 0)
+                                    ->get();
+    return view('welcome', compact('lelangs'))->with('i', (request()->input('page', 1) - 1) * 5);
+    // return view('welcome', compact('lelangs'));
+    }
+
     public function penawaran($id)
     {
         // $lelangs = Lelang::find($id);
@@ -84,8 +144,12 @@ class HomeController extends Controller
 
     public function pemenang()
     {
-        $penawarans = Penawaran::where('id_masyarakat', Auth::user()->id)->get();
-        return view('front.pemenang', compact('penawarans'));
+        // $penawarans = Penawaran::where('id_masyarakat', Auth::user()->id)->get();
+        // $penawarans = Penawaran::all();
+        // return view('front.pemenang', compact('penawarans'));
+
+        $lelangs = Lelang::all();
+        return view('front.pemenang', compact('lelangs'));
     }
 
     public function riwayat()
@@ -112,7 +176,11 @@ class HomeController extends Controller
     {
         $lelangs = DB::table('lelangs')->join('barangs', 'lelangs.id_barang', '=', 'barangs.id')
                                     ->leftJoin('gambars', 'gambars.id_barang', '=', 'barangs.id')
+                                    ->where('lelangs.tgl_mulai', '<', Carbon::now())
+                                    ->where('lelangs.tgl_akhir', '>', Carbon::now())
                                     ->where('lelangs.status', '=', 'open')
+                                    ->where('gambars.urutan', '=', '0')
+                                    // ->where('lelangs.status', '=', 'open')
                                     ->get();
 
         return view('front.datalelang', compact('lelangs'));

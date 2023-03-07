@@ -26,11 +26,26 @@
             <th>Harga Awal</th>
             <th>Harga Akhir</th>
             <th>Status</th>
-            <th>Action</th>
           </tr>
           </thead>
           <tbody>
-            @foreach ($penawarans as $p)
+            @foreach ($lelangs as $l)
+            @if ($l->confirm_date != null)
+            <tr>
+              <td>{{ @$l->masyarakat->nik }}</td>
+              <td>{{ @$l->masyarakat->name }}</td>
+              <td>{{ @$l->masyarakat->email }}</td>
+              <td>{{ @$l->masyarakat->no_hp }}</td>
+              <td>{{ @$l->masyarakat->alamat }}</td>
+              <td>{{ $l->tgl_mulai }} - {{ $l->tgl_akhir }}</td>
+              <td>{{ $l->barang->nama_barang }}</td>
+              <td>Rp. {{ number_format($l->harga_awal) }}</td>
+              <td>Rp. {{ number_format($l->harga_akhir) }}</td>
+              <td>{{ $l->status }}</td>
+            </tr>
+            @endif
+            @endforeach
+            {{-- @foreach ($penawarans as $p)
             <tr>
                 <td>{{ $p->masyarakat->nik }}</td>
                 <td>{{ $p->masyarakat->name }}</td>
@@ -42,10 +57,11 @@
                 <td>{{ $p->lelang->barang->harga_awal }}</td>
                 <td>{{ $p->harga_penawaran }}</td>
                 
-                <td> @if ($p->lelang->status == 'closed')
+                <td> 
+                  @if ($p->lelang->status == 'closed')
                   Unconfirmed
                   @else
-                  {{ $p->lelang->status }}
+                  {{ $p->lelang->barang->nama_barang }} Telah {{ $p->lelang->status }}
                 @endif
                 </td>
                 <td>
@@ -54,7 +70,7 @@
                   @endif
                 </td>
             </tr>
-            @endforeach
+            @endforeach --}}
           </tbody>
           <tfoot>
           <tr>
@@ -68,7 +84,6 @@
             <th>Harga Awal</th>
             <th>Harga Akhir</th>
             <th>Status</th>
-            <th>Actio</th>
           </tr>
           </tfoot>
         </table>

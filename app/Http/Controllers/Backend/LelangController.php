@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Barang;
 use App\Models\Lelang;
+use App\Models\Penawaran;
 use App\Models\Masyarakat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class LelangController extends Controller
@@ -20,12 +22,21 @@ class LelangController extends Controller
      */
     public function index()
     {
-        $barang = Barang::all();
-        $masyarakat = Masyarakat::all();
-        $user = User::all();
+        // $lelangs = DB::table('lelangs')->join('barangs', 'lelangs.id_barang', '=', 'barangs.id')
+        //                                ->leftJoin('gambars', 'gambars.id_barang', '=', 'barangs.id') 
+        //                                ->join('users', 'lelangs.created_by', '=', 'users.id')
+        //                                ->leftJoin('masyarakats', 'lelangs.id_masyarakat', '=', 'masyarakats.id') 
+        //                                ->get();
+        // $lelangs = DB::table('lelangs')->join
         $lelangs = Lelang::all();
+        $barang = Barang::all();
+        $masyarakats = Masyarakat::all();
+        $user = User::all();
+        // $lelangs = Lelang::join('penawarans')->with('id_masyarakat', $lelangs);
+        // $penawaran = Penawaran::all();
         
-        return view('backend.lelang.index', compact('barang', 'masyarakat', 'lelangs', 'user'));
+        return view('backend.lelang.index', compact('lelangs','barang','masyarakats','user'));
+        // return view('backend.lelang.index', compact('lelangs'));
     }
 
     /**

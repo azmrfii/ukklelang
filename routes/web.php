@@ -35,13 +35,18 @@ Route::get('error/page', [DashboardController::class, 'coba'])->name('coba');
 // Route::Masyarakat
 Route::group(['middleware' => ['auth:masyarakat', 'isActive']], function() {
     Route::get('home', [HomeController::class, 'home'])->name('home');
+    Route::put('edit/akun/{id}', [HomeController::class, 'edit'])->name('edit.akun');
+    Route::put('edit/password/{id}', [HomeController::class, 'editpass'])->name('edit.password');
     Route::get('barang/penawaran/{id}', [HomeController::class, 'penawaran'])->name('barang.penawaran');
     Route::get('penawaran', [HomeController::class, 'penawaran'])->name('penawaran');
     Route::get('data/lelang', [HomeController::class, 'datalelang'])->name('data.lelang');
     Route::get('riwayat', [HomeController::class, 'riwayat'])->name('riwayat');
     Route::get('detailriwayat', [HomeController::class, 'detail'])->name('detailriwayat');
+    // Route::get('riwayatpemenang', [HomeController::class, 'pemenang'])->name('riwayatpemenang');
     Route::get('riwayatpemenang', [HomeController::class, 'pemenang'])->name('riwayatpemenang');
     Route::post('gotawar', [PenawaranController::class, 'gotawar'])->name('gotawar');
+    // 
+    Route::get('search', [HomeController::class, 'search'])->name('search.barang');
 });
 // Route::Petugas
 Route::group(['middleware' => ['auth:web', 'checkLevel:petugas', 'isActive']], function() {
@@ -64,7 +69,9 @@ Route::group(['middleware' => ['auth:web', 'checkLevel:petugas', 'isActive']], f
     Route::post('/lelangadd', [LelangController::class, 'add'])->name('lelangadd');    
     // Route Laporan
     Route::get('/confirm/{id}', [PenawaranController::class, 'confirm'])->name('confirm');
+    
     Route::get('riwayatpenawaran', [PenawaranController::class, 'riwayat'])->name('riwayatpenawaran');
+    // Route::get('pemenanglelang', [PenawaranController::class, 'pemenang'])->name('pemenanglelang');
     Route::get('pemenanglelang', [PenawaranController::class, 'pemenang'])->name('pemenanglelang');
 });
 // Route::Admin
